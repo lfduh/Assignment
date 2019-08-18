@@ -1,4 +1,4 @@
 # Assignment
 Assignment of Genesis Gaming
 
-¸Õª±ºô§}¡Ghttps://lfduh.github.io/Assignment/
+è©¦ç©ç¶²å€ï¼š https://lfduh.github.io/Assignment/
