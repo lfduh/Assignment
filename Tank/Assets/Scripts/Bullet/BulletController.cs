@@ -2,6 +2,7 @@
 using Assets.Scripts.Tank.Enumerations;
 using Assets.Scripts.Table;
 using Assets.Scripts.Common.Modifiers;
+using Assets.Scripts.Hay;   
 
 namespace Assets.Scripts.Bullet
 {
@@ -18,7 +19,9 @@ namespace Assets.Scripts.Bullet
         void Awake ()
         {
             view = GetComponent<BulletView>();
-            gameObject.AddComponent<BoxCollider>();
+            var coll = gameObject.AddComponent<BoxCollider2D>();
+            coll.isTrigger = true;
+            gameObject.AddComponent<Rigidbody2D>();
         }
 
         public void Initial ( TankType _tankType, Quaternion _rotation )
@@ -39,8 +42,14 @@ namespace Assets.Scripts.Bullet
             transform.position += Time.deltaTime * directionVector * bulletSpeed;
         }
 
-        void OnTriggerEnter2D ( Collider2D collision )
+        void OnTriggerEnter2D ( Collider2D _collision )
         {
+            if( _collision.tag == "Hay" )
+            {
+                var hay = _collision.GetComponent<HayController>();
+                new HealthModifier( hay, tankType );                
+            }
+
             Destroy( gameObject );
         }
     }

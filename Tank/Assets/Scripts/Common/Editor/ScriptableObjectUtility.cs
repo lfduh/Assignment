@@ -17,5 +17,11 @@ namespace Assets.Scripts.Common.Editor
         {
             CreateAsset<GameTable>();
         }
+
+        [MenuItem( "Assets/Create/MapGeneratoerSettings" )]
+        public static void CreateMapGeneratorSettings ()
+        {
+            CreateAsset<MapGeneratorSettings>();
+        }
     }
 }

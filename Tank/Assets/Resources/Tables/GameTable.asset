@@ -22,4 +22,5 @@ MonoBehaviour:
   hayHealthPoint: 100
   tankMoveSpeed: 2
   tankRotateSpeed: 2
-  bulletSpeed: 1
+  bulletSpeed: 5
+  bulletOffsetFactor: 0.6

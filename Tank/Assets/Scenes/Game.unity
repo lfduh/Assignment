@@ -151,8 +151,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e446421991833e3458084df25fa92bd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tank: {fileID: 0}
-  mapmanager: {fileID: 0}
   view: {fileID: 0}
 --- !u!4 &201009196
 Transform:
@@ -194,6 +192,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameCamera: {fileID: 0}
   asset: {fileID: 0}
+  upButtonView: {fileID: 0}
+  downButtonView: {fileID: 0}
+  leftButtonView: {fileID: 0}
+  rightButtonView: {fileID: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -230,7 +232,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.6039216, g: 0.46274513, b: 0.32156864, a: 0}
+  m_BackGroundColor: {r: 0.40784317, g: 0.32156864, b: 0.15294118, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0

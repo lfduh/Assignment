@@ -21,5 +21,8 @@ namespace Assets.Scripts.Tank
         [Space( 10 )]
         public bool isRotateLeft;
         public bool isRotateRight;
+
+        [Space( 10 )]
+        public float bulletOffsetFactor;
     }
 }

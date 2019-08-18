@@ -1,21 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using Assets.Scripts.Table;
+using Assets.Scripts.Tank.Enumerations;
 
 namespace Assets.Scripts.Common.Modifiers
 {
-    public class HealthModifier : Modifier
+    public class HealthModifier
     {
-        // Start is called before the first frame update
-        void Start ()
+        public HealthModifier ( IDamageReceiver _receiver, TankType _damageType )
         {
-
-        }
-
-        // Update is called once per frame
-        void Update ()
-        {
-
+            if( _receiver == null ) return;
+            var damagePoint = TableService.Instance.GetDamagePoint( _damageType );
+            _receiver.TakeDamage( damagePoint );
         }
     }
 }

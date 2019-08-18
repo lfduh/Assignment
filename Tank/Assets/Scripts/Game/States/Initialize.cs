@@ -3,9 +3,9 @@ using Assets.Scripts.Common;
 using Assets.Scripts.Common.Base;
 using Assets.Scripts.Common.Utilities;
 using Assets.Scripts.Game.Enumerations;
+using Assets.Scripts.Map;
 using Assets.Scripts.Tank;
 using Assets.Scripts.Tank.Enumerations;
-using Assets.Scripts.Map;
 
 namespace Assets.Scripts.Game.States
 {
@@ -20,7 +20,7 @@ namespace Assets.Scripts.Game.States
 
             var newTraceCamera = Camera.main.gameObject.AddComponent<TraceCamera>();
             newTraceCamera.SetTarget( newTank.transform );
-            newTank.gameObject.AddComponent<MapGenerater>();
+            newTank.gameObject.AddComponent<MapGenerator>();
 
             var newTrans = new Transition<GameStateType>();
             newTrans.preState = GameStateType.Initialize;

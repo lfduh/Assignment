@@ -21,5 +21,6 @@ namespace Assets.Scripts.Table
         public float tankRotateSpeed;
 
         public float bulletSpeed;
+        public float bulletOffsetFactor;
     }
 }

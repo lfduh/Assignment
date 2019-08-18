@@ -34,6 +34,7 @@ namespace Assets.Scripts.Tank
 
             model.moveSpeed = TableService.Instance.GetTankMoveSpeed(); //TODO Rename
             model.rotateSpeed = TableService.Instance.GetTankRotateSpeed();
+            model.bulletOffsetFactor = TableService.Instance.GetBulletOffsetFactor();
 
             InputService.Instance.upPressed.AddListener( Foward );
             InputService.Instance.downPressed.AddListener( Backward );
@@ -87,7 +88,7 @@ namespace Assets.Scripts.Tank
 
         public void Fire ()
         {
-            var newBulletAsset = Instantiate( bulletPrefab, transform.position, transform.rotation );
+            var newBulletAsset = Instantiate( bulletPrefab, transform.position + model.bulletOffsetFactor * ( transform.rotation * Vector3.up), transform.rotation );
             var newBullet = newBulletAsset.gameObject.AddComponent<BulletController>();
             newBullet.Initial( model.tankType, transform.rotation );
         }

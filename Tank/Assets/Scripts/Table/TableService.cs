@@ -48,5 +48,10 @@ namespace Assets.Scripts.Table
         {
             return gameTable.bulletSpeed;
         }
+
+        public float GetBulletOffsetFactor ()
+        {
+            return gameTable.bulletOffsetFactor;
+        }
     }
 }
