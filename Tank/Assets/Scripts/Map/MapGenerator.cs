@@ -13,24 +13,21 @@ namespace Assets.Scripts.Map
         [Header( "Runtime Ref." )]
         [SerializeField] GameObject hayPrefab;
         [SerializeField] GameObject wallPrefab;
-        [SerializeField] Vector3Int closestGridIndex;
-        [SerializeField] HashSet<Vector3Int> generatedGridIndex;
-        [SerializeField] HashSet<Vector3Int> sightedGridIndex;
-        //[SerializeField] List<int> indexX;
-        //[SerializeField] List<int> indexY;
+
         [SerializeField] MapGeneratorSettings settings;
         [SerializeField] MapRecycler recycler;
 
-        [Header( "Runtime Value." )]        
+        [SerializeField] HashSet<Vector3Int> generatedGridIndex;
+        [SerializeField] HashSet<Vector3Int> sightedGridIndex;
+        
+        [Header( "Runtime Value." )]
+        [SerializeField] Vector3Int closestGridIndex;
         [SerializeField] int currentUpdateInterval;
                 
         void Awake ()
         {
             generatedGridIndex = new HashSet<Vector3Int>();
             sightedGridIndex = new HashSet<Vector3Int>();
-
-            //indexX = new List<int>();
-            //indexY = new List<int>();
         }
 
         void Start ()
@@ -57,31 +54,7 @@ namespace Assets.Scripts.Map
         void UpdateMap ()
         {
             closestGridIndex = new Vector3Int( (int)(transform.position.x / settings.gridSize ), (int)(transform.position.y / settings.gridSize ), 0 );
-
             
-            //indexX.Clear();
-            //indexY.Clear();
-            /*
-            for( int i = settings.reservedIndexRange.x * -1; i < settings.reservedIndexRange.x; i++ )
-            {
-                indexX.Add( closestGridIndex.x + i );
-            }
-
-            for( int i = settings.reservedIndexRange.y * -1; i < settings.reservedIndexRange.y; i++ )
-            {
-                indexY.Add( closestGridIndex.y + i );
-            }
-
-            sightedGridIndex.Clear();
-            foreach( var _x in indexX )
-            {
-                foreach( var _y in indexY )
-                {
-                    sightedGridIndex.Add( new Vector3Int( _x, _y, 0 ) );
-                }
-            }
-            */
-
             sightedGridIndex.Clear();
             for( int i = settings.reservedIndexRange.x * -1; i < settings.reservedIndexRange.x; i++ )
             {                
@@ -89,11 +62,9 @@ namespace Assets.Scripts.Map
                 {                    
                     sightedGridIndex.Add( new Vector3Int( closestGridIndex.x + i, closestGridIndex.y + j, 0 ) );
                 }
-            }
-            
+            }            
 
             var newGrid = sightedGridIndex.Except( generatedGridIndex );
-
             foreach( var _newGrid in newGrid )
             {
                 if( closestGridIndex == _newGrid )
@@ -101,6 +72,7 @@ namespace Assets.Scripts.Map
                     generatedGridIndex.Add( _newGrid );
                     continue;
                 }
+
                 GenerateGrid( _newGrid );
             }
         }
@@ -129,8 +101,7 @@ namespace Assets.Scripts.Map
             var dir =  _toRemoveIndex - closestGridIndex;
             var axis = Mathf.Abs( dir.x ) >= Mathf.Abs( dir.y ) ? Vector2.right : Vector2.up;
             if( axis == Vector2.right ) generatedGridIndex.RemoveWhere( _index => _index.x == _toRemoveIndex.x );
-            if( axis == Vector2.up ) generatedGridIndex.RemoveWhere( _index => _index.y == _toRemoveIndex.y );
-            Debug.Log( generatedGridIndex.Count + "" );
+            if( axis == Vector2.up ) generatedGridIndex.RemoveWhere( _index => _index.y == _toRemoveIndex.y );           
         }            
     }
 }

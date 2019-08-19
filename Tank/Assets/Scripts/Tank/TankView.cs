@@ -14,11 +14,13 @@ namespace Assets.Scripts.Tank
             asset = GetComponent<TankAsset>();
         }
 
+        /*
         void Start ()
         {            
             asset.gameObject.AddComponent<BoxCollider2D>();
             asset.gameObject.AddComponent<Rigidbody2D>();
         }
+        */
 
         public void SetColor( TankType _tankType )
         {

@@ -32,7 +32,10 @@ namespace Assets.Scripts.Tank
         {
             view.SetColor( model.tankType );
 
-            model.moveSpeed = TableService.Instance.GetTankMoveSpeed(); //TODO Rename
+            gameObject.AddComponent<BoxCollider2D>();
+            gameObject.AddComponent<Rigidbody2D>();
+
+            model.moveSpeed = TableService.Instance.GetTankMoveSpeed();
             model.rotateSpeed = TableService.Instance.GetTankRotateSpeed();
             model.bulletOffsetFactor = TableService.Instance.GetBulletOffsetFactor();
 
@@ -44,7 +47,7 @@ namespace Assets.Scripts.Tank
             InputService.Instance.zPressed.AddListener( ChangeTank );
             InputService.Instance.spacePressed.AddListener( Fire );
 
-            bulletPrefab = ((GameObject)Resources.Load( Constants.ResourcePath.Game.BULLET )).GetComponent<BulletAsset>();
+            bulletPrefab = ((GameObject)Resources.Load( Constants.ResourcePath.Game.BULLET )).GetComponent<BulletAsset>();            
         }
 
         void Update()
@@ -55,8 +58,8 @@ namespace Assets.Scripts.Tank
 
         void UpdateRotation ()
         {
-            var dir = Convert.ToInt16( model.isRotateLeft ) - Convert.ToInt16( model.isRotateRight );
-            transform.Rotate( dir * Vector3.forward * model.rotateSpeed );
+            var vector = Convert.ToInt16( model.isRotateLeft ) - Convert.ToInt16( model.isRotateRight );
+            transform.Rotate( vector * Vector3.forward * model.rotateSpeed );
         }
 
         void UpdatePosition ()
@@ -88,7 +91,7 @@ namespace Assets.Scripts.Tank
 
         public void Fire ()
         {
-            var newBulletAsset = Instantiate( bulletPrefab, transform.position + model.bulletOffsetFactor * ( transform.rotation * Vector3.up), transform.rotation );
+            var newBulletAsset = Instantiate( bulletPrefab, transform.position + model.bulletOffsetFactor * ( transform.rotation * Vector3.up ), transform.rotation );
             var newBullet = newBulletAsset.gameObject.AddComponent<BulletController>();
             newBullet.Initial( model.tankType, transform.rotation );
         }
