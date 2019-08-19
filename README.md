@@ -7,6 +7,6 @@ Assignment of Genesis Gaming
 
   -方向鍵：前進、後退、旋轉
   
-  -空白建：發射砲彈
+  -空白鍵：發射砲彈
   
   -Z：切換坦克
