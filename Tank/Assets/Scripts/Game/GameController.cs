@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
-using Assets.Scripts.Game.Enumerations;
 using Assets.Scripts.Common.Base;
+using Assets.Scripts.Game.Enumerations;
 
 namespace Assets.Scripts.Game
 {

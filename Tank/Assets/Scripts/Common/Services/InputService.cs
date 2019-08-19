@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Assets.Scripts.Common.Utilities;
+﻿using UnityEngine;
 using UnityEngine.Events;
+using Assets.Scripts.Common.Utilities;
 
 namespace Assets.Scripts.Common.Services
 {

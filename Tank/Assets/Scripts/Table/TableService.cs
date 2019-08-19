@@ -10,8 +10,9 @@ namespace Assets.Scripts.Table
     public class TableService : PrefabSingleton<TableService>
     {
         [Header( "Runtime Ref." )]        
-        GameTable gameTable;
-        Dictionary<TankType, short> damageTableCache;
+        [SerializeField] GameTable gameTable;
+        [SerializeField] MapGeneratorSettings mapGeneratorSettings;
+        [SerializeField] Dictionary<TankType, short> damageTableCache;
 
         public TableService Initial ()
         {
@@ -21,7 +22,9 @@ namespace Assets.Scripts.Table
         void Start ()
         {
             gameTable = (GameTable)Resources.Load( Constants.ResourcePath.Table.GAMETABLE );
-            damageTableCache = gameTable.damageTable.ToDictionary( _pair => _pair.tankType, _pair => _pair.damage );            
+            damageTableCache = gameTable.damageTable.ToDictionary( _pair => _pair.tankType, _pair => _pair.damage );
+
+            mapGeneratorSettings = (MapGeneratorSettings)Resources.Load( Constants.ResourcePath.Table.MAPGENERATORSETTINGS );
         }
 
         public short GetHayHealthPoint ()
@@ -52,6 +55,11 @@ namespace Assets.Scripts.Table
         public float GetBulletOffsetFactor ()
         {
             return gameTable.bulletOffsetFactor;
+        }
+
+        public MapGeneratorSettings GetMapGeneratorSettings ()
+        {
+            return mapGeneratorSettings;
         }
     }
 }

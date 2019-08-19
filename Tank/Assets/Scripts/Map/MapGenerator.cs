@@ -4,59 +4,70 @@ using UnityEngine;
 using Assets.Scripts.Common;
 using Assets.Scripts.Hay;
 using Assets.Scripts.Map.Enumerations;
+using Assets.Scripts.Table;
 
 namespace Assets.Scripts.Map
 {
     public class MapGenerator : MonoBehaviour
     {
         [Header( "Runtime Ref." )]
-        public GameObject hayPrefab;
-        public GameObject wallPrefab;
+        [SerializeField] GameObject hayPrefab;
+        [SerializeField] GameObject wallPrefab;
+        [SerializeField] Vector3Int closestGridIndex;
+        [SerializeField] HashSet<Vector3Int> generatedGridIndex;
+        [SerializeField] HashSet<Vector3Int> sightedGridIndex;
+        //[SerializeField] List<int> indexX;
+        //[SerializeField] List<int> indexY;
+        [SerializeField] MapGeneratorSettings settings;
+        [SerializeField] MapRecycler recycler;
 
-        public HashSet<Vector3Int> generatedGridIndex;
-        public HashSet<Vector3Int> sightedGridIndex;
-
-        public List<int> indexX;
-        public List<int> indexY;
-
-        [Header( "Runtime Value." )]
-        public float gridSize = 0.64f;
-        public int gridIndexRangeX = 17;
-        public int gridIndexRangeY = 10;
-
-        public int updateInterval = -1;
+        [Header( "Runtime Value." )]        
+        [SerializeField] int currentUpdateInterval;
                 
         void Awake ()
         {
             generatedGridIndex = new HashSet<Vector3Int>();
             sightedGridIndex = new HashSet<Vector3Int>();
 
-            indexX = new List<int>();
-            indexY = new List<int>();
+            //indexX = new List<int>();
+            //indexY = new List<int>();
         }
 
         void Start ()
         {
-            hayPrefab = (GameObject)Resources.Load( "Game/Hay" );
-            wallPrefab = (GameObject)Resources.Load( "Game/Wall" );
+            hayPrefab = (GameObject)Resources.Load( Constants.ResourcePath.Game.HAY );
+            wallPrefab = (GameObject)Resources.Load( Constants.ResourcePath.Game.WALL );
+            var recyclerPrefab = (GameObject)Resources.Load( Constants.ResourcePath.Game.RECYCLER );
+            recycler = Instantiate( recyclerPrefab, Camera.main.transform ).GetComponent<MapRecycler>();
+            recycler.SetRecycledAction( RecycleGrid );
+
+            settings = TableService.Instance.GetMapGeneratorSettings();
+            UpdateMap();
         }
 
         void Update ()
         {
-            updateInterval++;
-            if( updateInterval % 5 != 0 ) return;
+            currentUpdateInterval++;
+            if( currentUpdateInterval % settings.updateInterval != 0 ) return;
+            currentUpdateInterval = 0;
 
-            var closestGridIndex = new Vector3Int( (int)(transform.position.x / 0.64f), (int)(transform.position.y / 0.64f), 0 );
+            UpdateMap();
+        }
 
-            indexX.Clear();
-            indexY.Clear();
+        void UpdateMap ()
+        {
+            closestGridIndex = new Vector3Int( (int)(transform.position.x / settings.gridSize ), (int)(transform.position.y / settings.gridSize ), 0 );
 
-            for( int i = gridIndexRangeX * -1; i < gridIndexRangeX; i++ )
+            
+            //indexX.Clear();
+            //indexY.Clear();
+            /*
+            for( int i = settings.reservedIndexRange.x * -1; i < settings.reservedIndexRange.x; i++ )
             {
                 indexX.Add( closestGridIndex.x + i );
             }
 
-            for( int i = gridIndexRangeY * -1; i < gridIndexRangeY; i++ )
+            for( int i = settings.reservedIndexRange.y * -1; i < settings.reservedIndexRange.y; i++ )
             {
                 indexY.Add( closestGridIndex.y + i );
             }
@@ -69,12 +80,27 @@ namespace Assets.Scripts.Map
                     sightedGridIndex.Add( new Vector3Int( _x, _y, 0 ) );
                 }
             }
+            */
+
+            sightedGridIndex.Clear();
+            for( int i = settings.reservedIndexRange.x * -1; i < settings.reservedIndexRange.x; i++ )
+            {                
+                for( int j = settings.reservedIndexRange.y * -1; j < settings.reservedIndexRange.y; j++ )
+                {                    
+                    sightedGridIndex.Add( new Vector3Int( closestGridIndex.x + i, closestGridIndex.y + j, 0 ) );
+                }
+            }
+            
 
             var newGrid = sightedGridIndex.Except( generatedGridIndex );
 
             foreach( var _newGrid in newGrid )
             {
-                if( closestGridIndex == _newGrid ) continue;
+                if( closestGridIndex == _newGrid )
+                {
+                    generatedGridIndex.Add( _newGrid );
+                    continue;
+                }
                 GenerateGrid( _newGrid );
             }
         }
@@ -89,11 +115,22 @@ namespace Assets.Scripts.Map
             var type = (GridType)Random.Range( 1, 3 );
 
             GameObject newObj = null;
-            if( type == GridType.Hay ) newObj = Instantiate( hayPrefab, (Vector3)_gridIndex * gridSize, Quaternion.identity ).AddComponent<HayController>().gameObject;
-            if( type == GridType.Wall ) newObj = Instantiate( wallPrefab, (Vector3)_gridIndex * gridSize, Quaternion.identity );
+            if( type == GridType.Hay ) newObj = Instantiate( hayPrefab, (Vector3)_gridIndex * settings.gridSize, Quaternion.identity ).AddComponent<HayController>().gameObject;
+            if( type == GridType.Wall ) newObj = Instantiate( wallPrefab, (Vector3)_gridIndex * settings.gridSize, Quaternion.identity );
 
-            if( !newObj ) return;            
+            if( !newObj ) return;          
             newObj.AddComponent<BoxCollider2D>();
+            var indexContain = newObj.AddComponent<IndexContainer>();
+            indexContain.gridIndex = _gridIndex;
         }
+
+        void RecycleGrid ( Vector3Int _toRemoveIndex )
+        {
+            var dir =  _toRemoveIndex - closestGridIndex;
+            var axis = Mathf.Abs( dir.x ) >= Mathf.Abs( dir.y ) ? Vector2.right : Vector2.up;
+            if( axis == Vector2.right ) generatedGridIndex.RemoveWhere( _index => _index.x == _toRemoveIndex.x );
+            if( axis == Vector2.up ) generatedGridIndex.RemoveWhere( _index => _index.y == _toRemoveIndex.y );
+            Debug.Log( generatedGridIndex.Count + "" );
+        }            
     }
 }

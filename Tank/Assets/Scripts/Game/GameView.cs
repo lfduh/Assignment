@@ -1,14 +1,13 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
-using Assets.Scripts.Common.Utilities;
 using Assets.Scripts.Common.UI;
+using Assets.Scripts.Common.Utilities;
 
 namespace Assets.Scripts.Game
 {
     public class GameView : MonoBehaviour
     {
         [Header( "Runtime Ref." )]
-        [SerializeField] TraceCamera gameCamera;
         [SerializeField] GameAsset asset;
 
         [SerializeField] HoldButtonView upButtonView;
@@ -18,8 +17,7 @@ namespace Assets.Scripts.Game
 
         void Awake ()
         {
-            asset = FindObjectOfType<GameAsset>();
-            gameCamera = FindObjectOfType<TraceCamera>();
+            asset = FindObjectOfType<GameAsset>();           
         }
 
         void Start ()

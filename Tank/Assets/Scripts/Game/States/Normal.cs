@@ -1,8 +1,4 @@
-﻿
-namespace Assets.Scripts.Game.States
+﻿namespace Assets.Scripts.Game.States
 {
-    public class Normal : GameState
-    {
-
-    }
+    public class Normal : GameState {}
 }

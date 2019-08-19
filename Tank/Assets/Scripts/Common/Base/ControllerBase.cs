@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Assets.Scripts.Common.Utilities;
 
@@ -16,11 +14,7 @@ namespace Assets.Scripts.Common.Base
 			if( currentState ) Destroy( currentState );
 
 			string myNameSpace = GetType().Namespace;
-			string stateFullName = myNameSpace + ".States." + _transition.nextState;
-
-            #if UNITY_DEBUG
-			Debug.Log( stateFullName );
-            #endif
+			string stateFullName = myNameSpace + ".States." + _transition.nextState;            
                        
             var type = Type.GetType( stateFullName );
 			var state = (StateBase<T>)gameObject.AddComponent( type );
@@ -30,10 +24,8 @@ namespace Assets.Scripts.Common.Base
 		}
 
 		public virtual void InitialState ( ControllerBase<T> _controller, Transition<T> _trans )
-		{
-			//Debug.Log( "Base Initial State" );
+		{			
 			currentState.Initial( _controller, _trans );
 		}
-
 	}
 }

@@ -17,10 +17,10 @@ namespace Assets.Scripts.Game.States
             controller.view.SetDirectionButtonHoldAction( newTank.Foward, newTank.Backward, newTank.RotateLeft, newTank.RotateRight );
             controller.view.SetFireButtonAction( newTank.Fire );
             controller.view.SetChangeButtonAction( newTank.ChangeTank );
+            newTank.gameObject.AddComponent<MapGenerator>();
 
             var newTraceCamera = Camera.main.gameObject.AddComponent<TraceCamera>();
             newTraceCamera.SetTarget( newTank.transform );
-            newTank.gameObject.AddComponent<MapGenerator>();
 
             var newTrans = new Transition<GameStateType>();
             newTrans.preState = GameStateType.Initialize;
