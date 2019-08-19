@@ -1,6 +1,14 @@
 # Assignment
 Assignment of Genesis Gaming
 
+資料夾說明：
+
+  -Tank：Unity專案
+  
+  -doc：相關文件
+  
+  -docs：網頁試玩版存放空間
+
 試玩網址： https://lfduh.github.io/Assignment/
 
 額外的操作方式：
